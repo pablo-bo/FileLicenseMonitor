@@ -34,18 +34,37 @@ public class MonitorFileLicense {
         }
     }
     public static void main(String[] args) throws IOException {
+        String LicenseDirPath;
         System.out.println("File license monitor for 1C v0.1");
-        //System.out.println("args = "+Arrays.asList(args));
-        // TODO parsing args  -v:validate, -u:usage -p:path_to_licenses_dir
+        // parsing args  -v:validate, -u:usage -p:path_to_licenses_dir
         List<String> arguments = Arrays.asList(args);
-        boolean used = arguments.contains("-u");
+        boolean used     = arguments.contains("-u");
         boolean validate = arguments.contains("-v");
+        boolean usePath  = arguments.contains("-p");
+        if (usePath){
+            int idxPath = arguments.indexOf("-p")+1;
+            if (arguments.size()>idxPath){
+                //В аргументах есть путь
+                LicenseDirPath = arguments.get(idxPath);
+            }else {
+                System.out.println("Забыли указать путь в аргументах, поиск будет по стандартному пути");
+                LicenseDirPath = standardLicenseDirPath;
+            }
+        }else {
+            LicenseDirPath = standardLicenseDirPath;
+        }
 
-        List<License> licList = fillLicensesList(standardLicenseDirPath);
+        System.out.println("Каталог лицензий: "+LicenseDirPath);
+        //Нужно проверить существование этого пути
+        File validateDir = new File(LicenseDirPath);
+        if (!validateDir.isDirectory()) {
+            throw new IOException("Указанного каталога не существает!");
+        }
+
+        List<License> licList = fillLicensesList(LicenseDirPath);
 
         if (used){
-            // во время первого вызова будет произведена проверка доступности
-            HandleUtil.getInstance();
+            HandleUtil.getInstance();// во время первого вызова будет произведена проверка доступности
         }
         printLicensesList(licList,validate, used);
         System.out.println("Done.");
