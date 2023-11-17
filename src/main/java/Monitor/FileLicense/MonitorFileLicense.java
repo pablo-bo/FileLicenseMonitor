@@ -9,7 +9,7 @@ public class MonitorFileLicense {
     private static final String standardLicenseDirPath = "C:\\ProgramData\\1C\\licenses";
 
     private static List<License> fillLicensesList(String licenseDirPath) {
-        List<License> licenseList = new ArrayList<License>();
+        List<License> licenseList = new ArrayList<>();
         File licenseDir = new File(licenseDirPath);
         FilenameFilter licFileFilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
@@ -27,7 +27,7 @@ public class MonitorFileLicense {
     private static void printLicensesList(List<License> licensesList, boolean validate, boolean use) throws IOException {
         int enumerator = 0;
         for (License lic : licensesList) {
-            System.out.println(String.format("[%s] License file name: %s, file path: %s",enumerator, lic.getLicFileName(), lic.getLicFilePath()));
+            System.out.printf("[%s] License file name: %s, file path: %s%n",enumerator, lic.getLicFileName(), lic.getLicFilePath());
             enumerator++;
             if(validate) { lic.validate(); }
             if(use)      { lic.used();}
