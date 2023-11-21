@@ -66,6 +66,10 @@ public class MonitorFileLicense {
         if (used){
             HandleUtil.getInstance();// во время первого вызова будет произведена проверка доступности
         }
+        if (validate){
+            RingUtil.getInstance();// во время первого вызова будет произведена проверка доступности
+            System.out.println("available ring version is :"+RingUtil.getInstance().version);
+        }
         printLicensesList(licList,validate, used);
         System.out.println("Done.");
     }
