@@ -59,5 +59,27 @@ public class RingUtil {
         return false;
     }
 
+    //Возвращает имя лицензии по переданному файлу лицензии
+    //Пояснение Имя файла лицензии не является именем лицензии
+    //Имя лицензии зашифровано в содержимом файла
+    public String getLicenseName(License license) throws IOException {
+        Process p = Runtime.getRuntime().exec(path + " license list --send-statistics false");
+        try (BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+            String line;
+            while ((line = input.readLine()) != null) {
+                if (line.contains(license.getLicFileName())) {
+                    //строка имеет вид 010100000000002-800000001 (имя файла: "20200626133114.lic")
+                    //левая часть до пробела - наше имя лицензии
+                    String licName = line.split(" ")[0];
+                    return licName;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Неожиданная ошибка ввода/вывода.");
+            return "";
+        }
+
+        return "";
+    }
 
 }
