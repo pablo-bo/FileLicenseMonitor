@@ -82,4 +82,27 @@ public class RingUtil {
         return "";
     }
 
+    //Проверяет валидность файла лицензии.
+    public String validate(License license) throws IOException {
+        if (! this.isAvailable) {
+            return  "Util ring not available."; // TODO выбросить исключение
+        }
+        String licName = getLicenseName(license);
+        Process p = Runtime.getRuntime().exec(path + " license validate --name "+licName+" --send-statistics false");
+        try (BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream(),"Cp1251"))) {
+            String line;
+            while ((line = input.readLine()) != null) {
+                if (line.contains(licName)) {
+                    //строка имеет вид Проверка лицензии "010100000000002-800000001" (файл: "010100000000002-800000001") выполнена успешно.
+                    String validate = line;//line.split(")")[1];
+                    return validate;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Неожиданная ошибка ввода/вывода.");
+            return "";
+        }
+        return "";
+    }
+
 }
