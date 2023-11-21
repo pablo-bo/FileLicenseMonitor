@@ -29,19 +29,10 @@ public class License {
 
     public  void validate() throws IOException {
         System.out.print("  wait, validating - ");
-        System.out.println("  sorry, validate not implemented yet.");
-//        String execpath = "\"C:\\Program Files\\1C\\1CE\\components\\1c-enterprise-ring-0.11.10+2-x86_64\\ring.cmd\" license validate --send-statistics false --name "+this.licFile.getAbsolutePath();
-//        //System.out.println(execpath);
-//        Process p = Runtime.getRuntime().exec(execpath);
-//        try (BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
-//            String line;
-//            while ((line = input.readLine()) != null) {
-//                System.out.println(line);
-//            }
-//        }catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        System.out.println("==========================================================================================");
+        RingUtil ring = RingUtil.getInstance();
+        String resValidate = ring.validate(this);
+        System.out.println("  result: "+resValidate);
+
     }
     public  void used() throws IOException {
         System.out.print("  wait, searching using - ");
