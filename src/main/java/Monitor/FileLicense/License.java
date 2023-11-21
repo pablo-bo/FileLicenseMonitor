@@ -15,16 +15,11 @@ public class License {
         return licFile.getAbsolutePath();
     }
 
-    public void printInfo() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(licFile.getAbsolutePath()))) {
-            String line = reader.readLine();
-            while (line != null) {
-                System.out.println(line);
-                line = reader.readLine();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void info() throws IOException {
+        System.out.println("  wait, extract information...");
+        RingUtil ring = RingUtil.getInstance();
+        String info = ring.getLicenseInfo(this);
+        System.out.println(info);
     }
 
     public  void validate() throws IOException {
