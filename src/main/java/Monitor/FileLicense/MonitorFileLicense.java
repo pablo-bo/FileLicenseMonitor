@@ -24,11 +24,12 @@ public class MonitorFileLicense {
         }
         return licenseList;
     }
-    private static void printLicensesList(List<License> licensesList, boolean validate, boolean use) throws IOException {
+    private static void printLicensesList(List<License> licensesList, boolean validate, boolean use, boolean info) throws IOException {
         int enumerator = 0;
         for (License lic : licensesList) {
             System.out.printf("[%s] License file name: %s, file path: %s%n",enumerator, lic.getLicFileName(), lic.getLicFilePath());
             enumerator++;
+            if(info)     { lic.info();}
             if(validate) { lic.validate(); }
             if(use)      { lic.used();}
         }
@@ -36,10 +37,11 @@ public class MonitorFileLicense {
     public static void main(String[] args) throws IOException {
         String LicenseDirPath;
         System.out.println("File license monitor for 1C v0.1");
-        // parsing args  -v:validate, -u:usage -p:path_to_licenses_dir
+        // parsing args  -v:validate, -i:info, -u:usage, -p:path_to_licenses_dir
         List<String> arguments = Arrays.asList(args);
         boolean used     = arguments.contains("-u");
         boolean validate = arguments.contains("-v");
+        boolean info     = arguments.contains("-i");
         boolean usePath  = arguments.contains("-p");
         if (usePath){
             int idxPath = arguments.indexOf("-p")+1;
@@ -66,11 +68,11 @@ public class MonitorFileLicense {
         if (used){
             HandleUtil.getInstance();// во время первого вызова будет произведена проверка доступности
         }
-        if (validate){
+        if (validate || info){
             RingUtil.getInstance();// во время первого вызова будет произведена проверка доступности
             System.out.println("available ring version is :"+RingUtil.getInstance().version);
         }
-        printLicensesList(licList,validate, used);
+        printLicensesList(licList,validate, used, info);
         System.out.println("Done.");
     }
 }
