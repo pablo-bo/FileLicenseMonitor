@@ -63,6 +63,9 @@ public class RingUtil {
     //Пояснение Имя файла лицензии не является именем лицензии
     //Имя лицензии зашифровано в содержимом файла
     public String getLicenseName(License license) throws IOException {
+        if (! this.isAvailable) {
+            return  "Util ring not available."; // TODO выбросить исключение
+        }
         Process p = Runtime.getRuntime().exec(path + " license list --send-statistics false");
         try (BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
             String line;
