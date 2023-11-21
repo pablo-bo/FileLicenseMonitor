@@ -107,5 +107,33 @@ public class RingUtil {
         }
         return "";
     }
+    //Выводит информацию файла лицензии.
+    public String getLicenseInfo(License license) throws IOException {
+        if (! this.isAvailable) {
+            return  "Util ring not available."; // TODO выбросить исключение
+        }
+        StringBuilder info = new StringBuilder();
+        String licName = getLicenseName(license);
+        Process p = Runtime.getRuntime().exec(path + " license info --name "+licName+" --send-statistics false");
+        try (BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream(),"Cp1251"))) {
+            String line;
+            while ((line = input.readLine()) != null) {
+                //System.out.println("Line="+line);
+                if (line.contains(license.getLicFileName())) {
+                    //Первая строки с которой начинается полезная информация
+                    //Имя файла лицензии: "000000000000001.lic"
+                    info.append("Имя лицензии:").append(licName).append("\n");
+                }
+                if (!info.isEmpty()){
+                    info.append(line).append("\n");;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Неожиданная ошибка ввода/вывода.");
+            return "";
+        }
+
+        return info.toString();
+    }
 
 }
