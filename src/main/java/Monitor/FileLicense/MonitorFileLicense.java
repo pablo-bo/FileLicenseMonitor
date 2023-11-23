@@ -36,7 +36,7 @@ public class MonitorFileLicense {
     }
     public static void main(String[] args) throws IOException {
         String LicenseDirPath;
-        System.out.println("File license monitor for 1C v0.1");
+        System.out.println("File license monitor for 1C v0.1-PRE");
         // parsing args  -v:validate, -i:info, -u:usage, -p:path_to_licenses_dir
         List<String> arguments = Arrays.asList(args);
         boolean used     = arguments.contains("-u");
